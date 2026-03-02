@@ -7,13 +7,18 @@ import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 
 export default function SummaryView() {
-    const dispatch = useAppDispatch()
-    const { selectedProduct, summary, card, customer, delivery, isLoading } = useAppSelector((s) => s.checkout)
-    const [processing, setProcessing] = useState(false)
+    const navigate = useAppDispatch()
 
     // Guardia — si falta estado, volver al inicio
-    if (!selectedProduct || !summary || !card || !customer || !delivery) {
-        dispatch(goToStep(1))
+    const shouldRedirect = !selectedProduct || !summary || !card || !customer || !delivery
+
+    useEffect(() => {
+        if (shouldRedirect) {
+            dispatch(goToStep(1))
+        }
+    }, [shouldRedirect, dispatch])
+
+    if (shouldRedirect) {
         return null
     }
 

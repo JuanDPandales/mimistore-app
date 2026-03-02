@@ -82,7 +82,7 @@ describe('CreditCardForm', () => {
 
     it('renders a Visa card logo for a Visa card number', () => {
         const visaValue = { ...mockValue, cardNumber: '4' }
-        const { rerender } = render(<CreditCardForm value={visaValue} onChange={() => { }} errors={{}} />)
+        render(<CreditCardForm value={visaValue} onChange={() => { }} errors={{}} />)
         // The card visual should render without errors
         expect(screen.getByPlaceholderText('1234 5678 9012 3456')).toBeInTheDocument()
     })
