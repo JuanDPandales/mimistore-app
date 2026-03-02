@@ -17,7 +17,7 @@ export const fetchProducts = createAsyncThunk('products/fetchAll', async () => {
 })
 
 export const refreshStock = createAsyncThunk('products/refreshStock', async (productId: string) => {
-  const { data } = await apiClient.get<{ data: { quantity: number } }>(`/stock/${productId}`)
+  const { data } = await apiClient.get<{ data: { quantity: number } }>(`/stock/product/${productId}`)
   return { productId, quantity: data.data.quantity }
 })
 
