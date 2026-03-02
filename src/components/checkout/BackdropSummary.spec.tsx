@@ -25,14 +25,14 @@ describe('BackdropSummary', () => {
         expect(screen.getByText('Resumen del pago')).toBeInTheDocument()
         expect(screen.getByText('Product 1')).toBeInTheDocument()
         expect(screen.getByText('Cargo base')).toBeInTheDocument()
-        expect(screen.getByText(/21.500/)).toBeInTheDocument()
+        expect(screen.getAllByText(/21.500/)[0]).toBeInTheDocument()
     })
 
     it('handles confirm click', () => {
         const onConfirmMock = jest.fn()
         render(<BackdropSummary product={product} summary={summary} isLoading={false} onConfirm={onConfirmMock} onBack={() => { }} />)
 
-        const payButton = screen.getByText(/Pagar/i)
+        const payButton = screen.getByRole('button', { name: /Pagar/i })
         fireEvent.click(payButton)
         expect(onConfirmMock).toHaveBeenCalled()
     })
