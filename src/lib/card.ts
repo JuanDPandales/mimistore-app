@@ -1,6 +1,7 @@
 export type CardType = 'VISA' | 'MASTERCARD' | 'UNKNOWN'
 
 export function detectCardType(number: string): CardType {
+    if (!number) return 'UNKNOWN'
     const clean = number.replace(/\s/g, '')
     if (/^4/.test(clean)) return 'VISA'
     if (/^5[1-5]/.test(clean) || /^2(2[2-9][1-9]|[3-6]\d{2}|7[01]\d|720)/.test(clean))
@@ -9,12 +10,15 @@ export function detectCardType(number: string): CardType {
 }
 
 export function formatCardNumber(value: string): string {
+    if (!value) return ''
     const clean = value.replace(/\D/g, '').slice(0, 16)
     return clean.replace(/(.{4})/g, '$1 ').trim()
 }
 
 export function validateLuhn(number: string): boolean {
+    if (!number || !number.length) return false
     const clean = number.replace(/\s/g, '')
+    if (!clean.length) return false
     let sum = 0, shouldDouble = false
     for (let i = clean.length - 1; i >= 0; i--) {
         let digit = parseInt(clean[i], 10)
