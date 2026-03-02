@@ -4,10 +4,12 @@ import { apiClient, tokenizeCard } from '@/lib/api'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { goToStep, setLoading, setTransactionResult } from '@/store/slices/checkoutSlide'
 import { ArrowLeft } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function SummaryView() {
-    const navigate = useAppDispatch()
+    const dispatch = useAppDispatch()
+    const { selectedProduct, summary, card, customer, delivery, isLoading } = useAppSelector((s) => s.checkout)
+    const [processing, setProcessing] = useState(false)
 
     // Guardia — si falta estado, volver al inicio
     const shouldRedirect = !selectedProduct || !summary || !card || !customer || !delivery
