@@ -1,0 +1,41 @@
+name: Deploy Frontend to EC2
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Build frontend
+      run: |
+        npm ci
+        npm run build
+
+    - name: Deploy to EC2 via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /home/ubuntu/app
+
+          # ── Traer últimos cambios ─────────────────────────────────────
+          git pull origin master
+
+          # ── Instalar dependencias y buildear ─────────────────────────
+          npm ci
+          npm run build
+
+          # ── Recargar Nginx para servir el nuevo build ─────────────────
+          sudo systemctl reload nginx
